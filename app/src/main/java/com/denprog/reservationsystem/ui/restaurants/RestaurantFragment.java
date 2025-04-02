@@ -47,4 +47,11 @@ public class RestaurantFragment extends Fragment {
         ReservationActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(ReservationActivityViewModel.class);
         viewModel.showPrevBtn.setValue(false);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ReservationActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(ReservationActivityViewModel.class);
+        viewModel.showPrevBtn.setValue(false);
+    }
 }
