@@ -4,68 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black2"
     tools:context=".ui.reservation_info.ReservationInfoFragment">
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="@+id/guideline11"
         app:layout_constraintTop_toTopOf="parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
             android:orientation="vertical">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reservation_info"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/baseline_info_24"
+                android:drawablePadding="10dp"
+                android:background="@color/white"
+                android:textSize="25sp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/albert_sans_bold"
+                />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="3dp">
+                android:textColorHint="@color/gray"
+                app:boxBackgroundMode="none"
+                app:hintTextColor="@color/black2"
+                app:startIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/first_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="First Name" />
+                    android:fontFamily="@font/albert_sans"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Enter your First Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="3dp">
+                android:textColorHint="@color/gray"
+                app:boxBackgroundMode="none"
+                app:hintTextColor="@color/black2"
+                app:startIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/middle_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Middle Name" />
+                    android:fontFamily="@font/albert_sans"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Enter your Middle Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="3dp">
+                android:textColorHint="@color/gray"
+                app:boxBackgroundMode="none"
+                app:hintTextColor="@color/black2"
+                app:startIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/last_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Last Name" />
+                    android:fontFamily="@font/albert_sans"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Enter your Last Name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="3dp">
+                android:textColorHint="@color/gray"
+                app:boxBackgroundMode="none"
+                app:hintTextColor="@color/black2"
+                app:startIconTint="@color/black">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/num_of_attending_diners_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Num Of Attending Diners"
+                    android:fontFamily="@font/albert_sans"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Enter Number Of Attending Diners"
                     android:inputType="number|numberSigned" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,6 +116,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/albert_sans"
                 android:text="Reservation Date" />
 
             <LinearLayout
@@ -87,6 +131,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pick Date"
+                    android:background="@drawable/secondary_button_design"
+                    android:padding="15dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/albert_sans_bold"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -95,6 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
+                android:paddingTop="10dp"
+                android:fontFamily="@font/albert_sans"
                 android:text="Reservation Duration" />
 
             <LinearLayout
@@ -109,6 +159,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pick Start"
+                    android:padding="15dp"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/black"
+
+                    android:background="@drawable/secondary_button_design"
+                    android:fontFamily="@font/albert_sans_bold"
                     android:textAlignment="center" />
 
                 <TextView
@@ -117,15 +173,37 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Pick End"
+                    android:padding="15dp"
+                    android:textColor="@color/black"
+
+                    android:background="@drawable/secondary_button_design"
+                    android:fontFamily="@font/albert_sans_bold"
                     android:textAlignment="center" />
             </LinearLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/button"
+                android:background="@drawable/main_button_design"
+                android:textColor="@color/white"
+                android:fontFamily="@font/albert_sans_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
+                android:layout_marginTop="10dp"
                 android:text="Finish Reservation" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.90"  />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.10" />
 </androidx.constraintlayout.widget.ConstraintLayout>
