@@ -14,13 +14,6 @@ public class User {
     public String username;
     public String password;
     public String roleCode;
-
-    public User(String firstName, String middleName, String lastName, String username, String password, String roleCode) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-        this.roleCode = roleCode;
-    }
+    public String email;
+    public String profilePath;
 }

@@ -9,17 +9,15 @@
         android:id="@+id/nav_home"
         android:name="com.denprog.reservationsystem.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_reservationActivity"
+            app:destination="@id/reservationActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/reservationActivity"
+        android:name="com.denprog.reservationsystem.ReservationActivity"
+        android:label="activity_reservation"
+        tools:layout="@layout/activity_reservation" />
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.denprog.reservationsystem.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.denprog.reservationsystem.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>

@@ -1,8 +1,14 @@
 package com.denprog.reservationsystem.ui.register;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,9 +20,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.denprog.reservationsystem.R;
 import com.denprog.reservationsystem.databinding.FragmentRegisterBinding;
+import com.denprog.reservationsystem.util.FileUtil;
+
+import java.io.FileNotFoundException;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -25,6 +35,18 @@ public class RegisterFragment extends Fragment {
 
     private RegisterViewModel mViewModel;
     private FragmentRegisterBinding bind;
+    private ActivityResultLauncher<PickVisualMediaRequest> imagePicker = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), new ActivityResultCallback<Uri>() {
+        @Override
+        public void onActivityResult(Uri o) {
+            if (o == null) {return;}
+            try {
+                mViewModel.profilePictureMutableLiveData.setValue(FileUtil.convertUriToBitmap(requireContext(), o));
+            } catch (FileNotFoundException e) {
+                mViewModel.profilePictureMutableLiveData.setValue(null);
+                Toast.makeText(requireContext(), "Something went wrong with picking the image.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    });
 
     public static RegisterFragment newInstance() {
         return new RegisterFragment();
@@ -72,6 +94,19 @@ public class RegisterFragment extends Fragment {
                         mViewModel.confirmPasswordField.get());
             }
         };
+
+        bind.registerAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bitmap bitmap = mViewModel.profilePictureMutableLiveData.getValue();
+                if (bitmap == null) {
+                    Toast.makeText(requireContext(), "Please Select A Profile Picture", Toast.LENGTH_SHORT).show();
+                } else {
+
+                }
+            }
+        });
+
         bind.firstNameField.addTextChangedListener(textWatcher);
         bind.middleNameField.addTextChangedListener(textWatcher);
         bind.lastNameField.addTextChangedListener(textWatcher);
@@ -93,6 +128,17 @@ public class RegisterFragment extends Fragment {
                 bind.passwordContentStatus.setChecked(registerFormState.passwordContentError == null);
                 bind.passwordLengthStatus.setChecked(registerFormState.passwordLengthError == null);
                 bind.confirmPasswordField.setError(registerFormState.confirmPasswordError);
+            }
+        });
+
+        mViewModel.profilePictureMutableLiveData.observe(getViewLifecycleOwner(), new Observer<Bitmap>() {
+            @Override
+            public void onChanged(Bitmap bitmap) {
+                if (bitmap == null) {
+                    bind.imageButton.setImageResource(R.drawable.ic_launcher_foreground);
+                } else {
+                    bind.imageButton.setImageBitmap(bitmap);
+                }
             }
         });
     }

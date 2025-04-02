@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.dagger.hilt.android")
+
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -27,6 +29,8 @@ android {
         }
     }
     compileOptions {
+
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -38,10 +42,12 @@ android {
 
 dependencies {
 
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation(libs.activity)
     implementation(libs.legacy.support.v4)
+    implementation(libs.recyclerview)
     annotationProcessor("com.google.dagger:hilt-android-compiler:2.51.1")
 
     val room_version = "2.6.1"

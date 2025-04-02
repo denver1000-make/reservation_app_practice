@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reservation_nav"
+    app:startDestination="@id/restaurantFragment">
+
+    <fragment
+        android:id="@+id/restaurantFragment"
+        android:name="com.denprog.reservationsystem.ui.restaurants.RestaurantFragment"
+        android:label="fragment_restaurant_list"
+        tools:layout="@layout/fragment_restaurant_list" >
+        <action
+            android:id="@+id/action_restaurantFragment_to_cuisineFragment"
+            app:destination="@id/cuisineFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cuisineFragment"
+        android:name="com.denprog.reservationsystem.ui.cuisines.CuisineFragment"
+        android:label="fragment_cuisine_list"
+        tools:layout="@layout/fragment_cuisine_list" >
+        <argument
+            android:name="cuisinesOFSelectedRestaurant"
+            app:argType="com.denprog.reservationsystem.room.entities.Cuisine[]" />
+        <action
+            android:id="@+id/action_cuisineFragment_to_reservationInfoFragment"
+            app:destination="@id/reservationInfoFragment" />
+        <argument
+            android:name="selectedRestaurant"
+            app:argType="com.denprog.reservationsystem.room.entities.Restaurant" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservationInfoFragment"
+        android:name="com.denprog.reservationsystem.ui.reservation_info.ReservationInfoFragment"
+        android:label="fragment_reservation_info"
+        tools:layout="@layout/fragment_reservation_info" >
+        <argument
+            android:name="selectedCuisine"
+            app:argType="com.denprog.reservationsystem.room.entities.Cuisine" />
+        <argument android:name="selectedRestaurant"
+            app:argType="com.denprog.reservationsystem.room.entities.Restaurant" />
+    </fragment>
+</navigation>

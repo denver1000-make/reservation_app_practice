@@ -1,5 +1,8 @@
 package com.denprog.reservationsystem.ui.register;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -7,7 +10,14 @@ import androidx.lifecycle.ViewModel;
 
 import com.denprog.reservationsystem.room.AppDatabase;
 import com.denprog.reservationsystem.room.dao.AppDao;
+import com.denprog.reservationsystem.room.entities.User;
+import com.denprog.reservationsystem.util.FileUtil;
+import com.denprog.reservationsystem.util.MainThreadRunner;
+import com.denprog.reservationsystem.util.SimpleOperationCallback;
 import com.denprog.reservationsystem.util.Validator;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -16,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class RegisterViewModel extends ViewModel {
     public MutableLiveData<RegisterFormState> registerFormStateMutableLiveData = new MutableLiveData<>(null);
+    public MutableLiveData<Bitmap> profilePictureMutableLiveData = new MediatorLiveData<>();
     public ObservableField<String> firstNameField = new ObservableField<>("");
     public ObservableField<String> middleNameField = new ObservableField<>("");
     public ObservableField<String> lastNameField = new ObservableField<>("");
@@ -59,6 +70,33 @@ public class RegisterViewModel extends ViewModel {
                                 passwordLengthError,
                                 passwordContentError,
                                 confirmPasswordError)));
+    }
+
+    public void register(User user, SimpleOperationCallback<User> userSimpleOperationCallback) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    appDao.insertUser(user);
+                } catch (Exception e) {
+                    MainThreadRunner.runOnMain(new Runnable() {
+                        @Override
+                        public void run() {
+                            userSimpleOperationCallback.onError(e.getMessage());
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void saveImage(User user, Bitmap bitmap, Context context, SimpleOperationCallback<String> onImageSaved) {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                // FileUtil.insertBitmapToInternalStorage(context, bitmap, FileUtil.profileImagesFolder, user.userId + FileUtil.personalProfileFolderAppend + "");
+            }
+        });
     }
 
 
