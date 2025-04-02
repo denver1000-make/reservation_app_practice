@@ -23,5 +23,23 @@
         android:name="com.denprog.reservationsystem.ReservationActivity"
         android:label="activity_reservation"
         tools:layout="@layout/activity_reservation" />
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.denprog.reservationsystem.ui.history.ReservationHistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_reservation_list" >
+        <action
+            android:id="@+id/action_nav_history_to_historyViewFragment"
+            app:destination="@id/historyViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyViewFragment"
+        android:name="com.denprog.reservationsystem.ui.history_view.HistoryViewFragment"
+        android:label="fragment_history_view"
+        tools:layout="@layout/fragment_history_view" >
+        <argument
+            android:name="reservationInfo"
+            app:argType="com.denprog.reservationsystem.room.entities.ReservationInfo" />
+    </fragment>
 
 </navigation>

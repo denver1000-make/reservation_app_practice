@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -24,7 +25,9 @@ import android.widget.Toast;
 
 import com.denprog.reservationsystem.ReservationActivityViewModel;
 import com.denprog.reservationsystem.databinding.FragmentReservationInfoBinding;
+import com.denprog.reservationsystem.room.entities.ReservationInfo;
 import com.denprog.reservationsystem.ui.register.RegisterFormState;
+import com.denprog.reservationsystem.util.SimpleOperationCallback;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -41,6 +44,7 @@ public class ReservationInfoFragment extends Fragment {
     private TimePickerDialog startTime;
     private TimePickerDialog endTime;
     private DatePickerDialog datePickerDialog;
+    private ProgressDialog progressDialog;
 
     public static ReservationInfoFragment newInstance() {
         return new ReservationInfoFragment();
@@ -50,7 +54,9 @@ public class ReservationInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentReservationInfoBinding.inflate(inflater, container, false);
-
+        progressDialog = new ProgressDialog(requireContext());
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please Wait");
         startTime = new TimePickerDialog(requireContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
@@ -137,23 +143,6 @@ public class ReservationInfoFragment extends Fragment {
             }
         });
 
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        };
-
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,6 +150,9 @@ public class ReservationInfoFragment extends Fragment {
                 String middleName = binding.middleNameField.getText().toString();
                 String lastName = binding.lastNameField.getText().toString();
                 String numOfGuests = binding.numOfAttendingDinersField.getText().toString();
+                LocalTime selectedStartTime = mViewModel.startTimeWrapperMutableLiveData.getValue();
+                LocalTime selectedEndTime = mViewModel.endTimeWrapperMutableLiveData.getValue();
+                LocalDate selectedDate = mViewModel.localDateMutableLiveData.getValue();
                 ReservationInfoFormState formState = mViewModel.onDataChanged(
                         firstName,
                         middleName,
@@ -183,7 +175,40 @@ public class ReservationInfoFragment extends Fragment {
                 }
 
                 if (formState.isDataValid) {
-                    requireActivity().finish();
+                    ReservationInfoFragmentArgs infoFragmentArgs = ReservationInfoFragmentArgs.fromBundle(getArguments());
+                    mViewModel.saveReservationInfo(new ReservationInfo(
+                            firstName,
+                            middleName,
+                            lastName,
+                            infoFragmentArgs.getSelectedRestaurant().restaurantName,
+                            infoFragmentArgs.getSelectedRestaurant().restaurantPrice,
+                            infoFragmentArgs.getSelectedCuisine().cuisineName,
+                            infoFragmentArgs.getSelectedCuisine().cuisinePrice,
+                            Integer.parseInt(numOfGuests),
+                            formatDate(selectedDate),
+                            formatTime(selectedStartTime),
+                            formatTime(selectedEndTime),
+                            viewModel.totalMutableLiveData.getValue()
+                    ), new SimpleOperationCallback<Long>() {
+                        @Override
+                        public void onLoading() {
+                            if (!progressDialog.isShowing()) {
+                                progressDialog.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFinished(Long data) {
+                            progressDialog.hide();
+                            requireActivity().finish();
+                        }
+
+                        @Override
+                        public void onError(String message) {
+                            progressDialog.hide();
+                            showError(message, null);
+                        }
+                    });
                 }
             }
         });
@@ -212,10 +237,10 @@ public class ReservationInfoFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(ReservationInfoViewModel.class);
         this.viewModel = new ViewModelProvider(requireActivity()).get(ReservationActivityViewModel.class);
         ReservationInfoFragmentArgs args = ReservationInfoFragmentArgs.fromBundle(getArguments());
-        this.viewModel.totalMutableLiveData.setValue(args.getSelectedRestaurant().restaurantPrice +  args.getSelectedCuisine().cuisinePrice);
+        this.viewModel.totalMutableLiveData.setValue(args.getSelectedRestaurant().restaurantPrice + args.getSelectedCuisine().cuisinePrice);
 
         mViewModel.startTimeWrapperMutableLiveData.observe(getViewLifecycleOwner(), localTime -> {
-             if (localTime == null) return;
+            if (localTime == null) return;
             binding.pickStartTime.setText(formatTime(localTime));
         });
 
@@ -227,16 +252,17 @@ public class ReservationInfoFragment extends Fragment {
         mViewModel.localDateMutableLiveData.observe(getViewLifecycleOwner(), new Observer<LocalDate>() {
             @Override
             public void onChanged(LocalDate localDate) {
-                if (localDate == null) {return;}
+                if (localDate == null) {
+                    return;
+                }
                 binding.pickDate.setText(formatDate(localDate));
             }
         });
 
 
-
     }
 
-    private String formatDate (LocalDate localDate) {
+    private String formatDate(LocalDate localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM dd, EEEE");
         return formatter.format(localDate);
     }
