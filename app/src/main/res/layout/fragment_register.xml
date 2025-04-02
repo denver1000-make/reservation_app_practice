@@ -100,6 +100,9 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/albert_sans"
                             android:inputType="textPersonName"
+                            android:padding="25dp"
+                            android:maxLines="1"
+
                             android:background="@drawable/edit_text_design"
                             android:hint="First Name"
                             android:text="@={registerFragmentViewModel.firstNameField}" />
@@ -121,8 +124,10 @@
                             android:inputType="textPersonName"
                             android:background="@drawable/edit_text_design"
                             android:hint="Middle Name"
-                            android:fontFamily="@font/albert_sans"
+                            android:padding="25dp"
+                            android:maxLines="1"
 
+                            android:fontFamily="@font/albert_sans"
                             android:text="@={registerFragmentViewModel.middleNameField}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,6 +155,9 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_text_design"
                             android:hint="Last name"
+                            android:padding="25dp"
+                            android:maxLines="1"
+
                             android:inputType="textPersonName"
                             android:fontFamily="@font/albert_sans"
 
@@ -171,6 +179,9 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/edit_text_design"
                             android:hint="Username"
+                            android:padding="25dp"
+                            android:maxLines="1"
+
                             android:inputType="textPersonName"
                             android:fontFamily="@font/albert_sans"
                             android:text="@={registerFragmentViewModel.usernameField}" />
@@ -193,55 +204,73 @@
                         android:drawableStart="@drawable/baseline_alternate_email_24"
                         android:drawablePadding="10dp"
                         android:hint="Email"
+                        android:padding="25dp"
+                        android:maxLines="1"
                         android:inputType="textEmailAddress"
                         android:fontFamily="@font/albert_sans"
                         android:text="@={registerFragmentViewModel.emailNameField}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray"
-                    app:boxBackgroundMode="none"
-                    app:hintTextColor="@color/black2"
-                    app:passwordToggleEnabled="true"
-                    app:startIconTint="@color/black">
+                    android:orientation="horizontal"
+                    >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password_field"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="10dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_design"
-                        android:drawableStart="@drawable/baseline_lock_24"
-                        android:drawablePadding="10dp"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:fontFamily="@font/albert_sans"
-                        android:text="@={registerFragmentViewModel.passwordField}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColorHint="@color/gray"
+                        app:boxBackgroundMode="none"
+                        app:hintTextColor="@color/black2"
+                        app:passwordToggleEnabled="true"
+                        app:startIconTint="@color/black">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/gray"
-                    app:boxBackgroundMode="none"
-                    app:hintTextColor="@color/black2"
-                    app:passwordToggleEnabled="true"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/password_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_text_design"
+                            android:drawableStart="@drawable/baseline_lock_24"
+                            android:drawablePadding="10dp"
+                            android:hint="Password"
+                            android:maxLines="1"
+                            android:padding="25dp"
+                            android:inputType="textPassword"
+                            android:fontFamily="@font/albert_sans"
+                            android:text="@={registerFragmentViewModel.passwordField}" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    app:startIconTint="@color/black">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/confirm_password_field"
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/edit_text_design"
-                        android:drawableStart="@drawable/baseline_lock_24"
-                        android:drawablePadding="10dp"
-                        android:inputType="textPassword"
-                        android:hint="Confirm Password"
-                        android:fontFamily="@font/albert_sans"
-                        android:text="@={registerFragmentViewModel.confirmPasswordField}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColorHint="@color/gray"
+                        app:boxBackgroundMode="none"
+                        app:hintTextColor="@color/black2"
+                        app:passwordToggleEnabled="true"
+
+                        app:startIconTint="@color/black">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/confirm_password_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/edit_text_design"
+                            android:drawableStart="@drawable/baseline_lock_24"
+                            android:drawablePadding="10dp"
+                            android:padding="25dp"
+                            android:maxLines="1"
+                            android:inputType="textPassword"
+                            android:hint="Confirm Password"
+                            android:fontFamily="@font/albert_sans"
+                            android:text="@={registerFragmentViewModel.confirmPasswordField}" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/register_action"
@@ -251,6 +280,8 @@
                     android:background="@drawable/main_button_design"
                     android:fontFamily="@font/albert_sans_bold"
                     android:text="Register"
+                    android:padding="20dp"
+
                     android:textColor="@color/white" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -295,14 +326,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.10"/>
+            app:layout_constraintGuide_percent="0.05"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.90" />
+            app:layout_constraintGuide_percent="0.95" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"
