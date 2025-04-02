@@ -1,11 +1,11 @@
 package com.denprog.reservationsystem;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.window.OnBackInvokedDispatcher;
+import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -84,15 +85,47 @@ public class ReservationActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.reservation_interrupt_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.searchView);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        assert searchView != null;
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                NavController navController = ((NavHostFragment) binding.reservationAcitvityContainer.getFragment()).getNavController();
+                NavDestination navDestination = navController.getCurrentDestination();
+                if (navDestination == null) return false;
+                if (navDestination.getId() == R.id.restaurantFragment) {
+                    viewModel.restaurantSearchQuery.setValue(s);
+                } else if (navDestination.getId() == R.id.cuisineFragment) {
+                    viewModel.cuisineSearchQuery.setValue(s);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                NavController navController = ((NavHostFragment) binding.reservationAcitvityContainer.getFragment()).getNavController();
+                NavDestination navDestination = navController.getCurrentDestination();
+                if (navDestination.getId() == R.id.restaurantFragment) {
+                    viewModel.restaurantSearchQuery.setValue(s);
+                } else if (navDestination.getId() == R.id.cuisineFragment) {
+                    viewModel.cuisineSearchQuery.setValue(s);
+                }
+                return true;
+            }
+        });
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Log.e("", "");
         if (item.getItemId() == R.id.exitReservationProcess) {
             if (!exitPrompt.isShowing()) {
                 exitPrompt.show();
             }
+        } else if (item.getItemId() == R.id.searchView) {
+
         }
         return super.onOptionsItemSelected(item);
     }

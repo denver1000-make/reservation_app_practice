@@ -29,6 +29,12 @@ public class MyRestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyRest
         mValues.addAll(Restaurant.generateRestaurantList());
     }
 
+    public void refreshAdapter(List<Restaurant> restaurants) {
+        this.mValues.clear();
+        this.mValues.addAll(restaurants);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

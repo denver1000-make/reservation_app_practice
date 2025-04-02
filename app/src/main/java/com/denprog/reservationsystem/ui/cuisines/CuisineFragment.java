@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,8 +22,14 @@ import com.denprog.reservationsystem.R;
 import com.denprog.reservationsystem.ReservationActivityViewModel;
 import com.denprog.reservationsystem.databinding.FragmentCuisineListBinding;
 import com.denprog.reservationsystem.room.entities.Cuisine;
+import com.denprog.reservationsystem.room.entities.Restaurant;
 import com.denprog.reservationsystem.ui.cuisines.placeholder.PlaceholderContent;
 import com.denprog.reservationsystem.util.SimpleClickCallback;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class CuisineFragment extends Fragment {
 
@@ -54,5 +61,25 @@ public class CuisineFragment extends Fragment {
         CuisineFragmentArgs args = CuisineFragmentArgs.fromBundle(getArguments());
         viewModel.totalMutableLiveData.setValue(args.getSelectedRestaurant().restaurantPrice);
         viewModel.showPrevBtn.setValue(true);
+        this.viewModel.cuisineSearchQuery.observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                List<Cuisine> filtered = new ArrayList<>();
+                List<Cuisine> orig = Arrays.asList(args.getCuisinesOFSelectedRestaurant());
+                if (s.isEmpty()) {
+                    adapter.refreshAdapter(orig);
+                    return;
+                }
+                orig.forEach(new Consumer<Cuisine>() {
+                    @Override
+                    public void accept(Cuisine restaurant) {
+                        if (restaurant.cuisineName.contains(s)) {
+                            filtered.add(restaurant);
+                        }
+                    }
+                });
+                adapter.refreshAdapter(filtered);
+            }
+        });
     }
 }

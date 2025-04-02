@@ -37,6 +37,12 @@ public class MyCuisineRecyclerViewAdapter extends RecyclerView.Adapter<MyCuisine
 
     }
 
+    public void refreshAdapter(List<Cuisine> cuisines) {
+        this.mValues.clear();
+        this.mValues.addAll(cuisines);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
