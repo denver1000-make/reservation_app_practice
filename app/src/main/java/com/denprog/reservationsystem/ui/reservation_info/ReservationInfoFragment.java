@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.denprog.reservationsystem.ReservationActivityViewModel;
 import com.denprog.reservationsystem.databinding.FragmentReservationInfoBinding;
+import com.denprog.reservationsystem.ui.register.RegisterFormState;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -135,6 +137,57 @@ public class ReservationInfoFragment extends Fragment {
             }
         });
 
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String firstName = binding.firstNameField.getText().toString();
+                String middleName = binding.middleNameField.getText().toString();
+                String lastName = binding.lastNameField.getText().toString();
+                String numOfGuests = binding.numOfAttendingDinersField.getText().toString();
+                ReservationInfoFormState formState = mViewModel.onDataChanged(
+                        firstName,
+                        middleName,
+                        lastName,
+                        numOfGuests,
+                        mViewModel.startTimeWrapperMutableLiveData.getValue(),
+                        mViewModel.endTimeWrapperMutableLiveData.getValue(),
+                        mViewModel.localDateMutableLiveData.getValue());
+                binding.firstNameField.setError(formState.usernameError);
+                binding.middleNameField.setError(formState.middleNameError);
+                binding.lastNameField.setError(formState.lastNameError);
+                binding.numOfAttendingDinersField.setError(formState.numOfAttendingDinersError);
+
+                if (formState.timeError != null) {
+                    showError(formState.timeError, null);
+                }
+
+                if (formState.dateError != null) {
+                    showError(formState.dateError, null);
+                }
+
+                if (formState.isDataValid) {
+                    requireActivity().finish();
+                }
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -171,6 +224,21 @@ public class ReservationInfoFragment extends Fragment {
             binding.pickEndTime.setText(formatTime(localTime));
         });
 
+        mViewModel.localDateMutableLiveData.observe(getViewLifecycleOwner(), new Observer<LocalDate>() {
+            @Override
+            public void onChanged(LocalDate localDate) {
+                if (localDate == null) {return;}
+                binding.pickDate.setText(formatDate(localDate));
+            }
+        });
+
+
+
+    }
+
+    private String formatDate (LocalDate localDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMMM dd, EEEE");
+        return formatter.format(localDate);
     }
 
 }

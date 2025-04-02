@@ -68,6 +68,18 @@ public class Validator {
         return matcher.matches();
     }
 
+    public static String numOfGuestsValidator(String numOfGuest) {
+        try {
+            int numOfGuestsInt = Integer.parseInt(numOfGuest);
+            if (numOfGuestsInt <= 0) {
+                return "Number of guests should at least be 1.";
+            }
+        } catch (NumberFormatException e) {
+            return "Please enter correct value.";
+        }
+        return null;
+    }
+
     public static boolean isPasswordLengthValid(String password) {
         return password.length() >= 8;
     }

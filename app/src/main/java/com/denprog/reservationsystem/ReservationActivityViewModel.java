@@ -5,6 +5,5 @@ import androidx.lifecycle.ViewModel;
 
 public class ReservationActivityViewModel extends ViewModel {
     public MutableLiveData<Float> totalMutableLiveData = new MutableLiveData<>(0f);
-
-
+    public MutableLiveData<Boolean> showPrevBtn = new MutableLiveData<>(false);
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.denprog.reservationsystem.R;
+import com.denprog.reservationsystem.ReservationActivityViewModel;
 import com.denprog.reservationsystem.databinding.FragmentRestaurantListBinding;
 import com.denprog.reservationsystem.room.entities.Cuisine;
 import com.denprog.reservationsystem.room.entities.Restaurant;
@@ -42,5 +44,7 @@ public class RestaurantFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ReservationActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(ReservationActivityViewModel.class);
+        viewModel.showPrevBtn.setValue(false);
     }
 }

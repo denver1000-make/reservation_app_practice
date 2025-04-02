@@ -26,6 +26,7 @@
                 android:layout_margin="3dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="First Name" />
@@ -37,6 +38,7 @@
                 android:layout_margin="3dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/middle_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Middle Name" />
@@ -48,6 +50,7 @@
                 android:layout_margin="3dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/last_name_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Last Name" />
@@ -59,6 +62,7 @@
                 android:layout_margin="3dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/num_of_attending_diners_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Num Of Attending Diners"

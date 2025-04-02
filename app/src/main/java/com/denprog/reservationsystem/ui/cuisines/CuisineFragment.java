@@ -53,5 +53,6 @@ public class CuisineFragment extends Fragment {
 
         CuisineFragmentArgs args = CuisineFragmentArgs.fromBundle(getArguments());
         viewModel.totalMutableLiveData.setValue(args.getSelectedRestaurant().restaurantPrice);
+        viewModel.showPrevBtn.setValue(true);
     }
 }
