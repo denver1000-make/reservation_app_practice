@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/item_number"
+        android:id="@+id/cuisine_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/secondary_button_design"

@@ -39,7 +39,7 @@ public class MyRestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyRest
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).restaurantName);
+        holder.binding.restaurantName.setText(mValues.get(position).restaurantName);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,13 +54,13 @@ public class MyRestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyRest
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
         public final TextView mContentView;
         public Restaurant mItem;
 
+        FragmentRestaurantItemBinding binding;
         public ViewHolder(FragmentRestaurantItemBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
+            this.binding =binding;
             mContentView = binding.content;
         }
 
