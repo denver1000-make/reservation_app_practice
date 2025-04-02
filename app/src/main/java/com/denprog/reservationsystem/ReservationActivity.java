@@ -57,6 +57,7 @@ public class ReservationActivity extends AppCompatActivity {
                 binding.totalDisplay.setText("Total: " + aFloat + " Pesos");
             }
         });
+
         NavController navController = ((NavHostFragment) binding.reservationAcitvityContainer.getFragment()).getNavController();
         binding.prevBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,27 +65,20 @@ public class ReservationActivity extends AppCompatActivity {
                 navController.popBackStack();
             }
         });
-        viewModel.showPrevBtn.observe(this, aBoolean -> {
-            binding.prevBtn.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
-            OnBackPressedCallback onBackPressedCallback;
-            if (aBoolean) {
-                onBackPressedCallback = new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        setEnabled(false);
-                        getOnBackPressedDispatcher().onBackPressed();
-                    }
-                };
-            } else {
-                onBackPressedCallback = new OnBackPressedCallback(true) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        exitPrompt.show();
-                    }
-                };
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(false) {
+            @Override
+            public void handleOnBackPressed() {
+                exitPrompt.show();
             }
-            getOnBackPressedDispatcher().addCallback(ReservationActivity.this, onBackPressedCallback);
+        };
+
+        viewModel.showPrevBtn.observe(this, showPrevButton -> {
+            binding.prevBtn.setVisibility(showPrevButton ? View.VISIBLE : View.GONE);
+            onBackPressedCallback.setEnabled(!showPrevButton);
         });
+
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     @Override
