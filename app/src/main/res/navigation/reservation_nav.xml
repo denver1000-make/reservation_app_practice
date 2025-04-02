@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_restaurant_list" >
         <action
             android:id="@+id/action_restaurantFragment_to_cuisineFragment"
-            app:destination="@id/cuisineFragment" />
+            app:destination="@id/cuisineFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/cuisineFragment"
@@ -24,7 +28,11 @@
             app:argType="com.denprog.reservationsystem.room.entities.Cuisine[]" />
         <action
             android:id="@+id/action_cuisineFragment_to_reservationInfoFragment"
-            app:destination="@id/reservationInfoFragment" />
+            app:destination="@id/reservationInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <argument
             android:name="selectedRestaurant"
             app:argType="com.denprog.reservationsystem.room.entities.Restaurant" />
