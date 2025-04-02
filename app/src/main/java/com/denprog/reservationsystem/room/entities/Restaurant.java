@@ -42,10 +42,10 @@ public class Restaurant implements Parcelable {
         List<Restaurant> restaurants = new ArrayList<>();
         List<Cuisine> cuisines = new ArrayList<>();
         Cuisine[] cuisineArray = new Cuisine[]{new Cuisine("Asian", 3000), new Cuisine("Mexican", 3000)};
-        restaurants.add(new Restaurant("Nx's", 300, cuisineArray));
-        restaurants.add(new Restaurant("Mx's", 300, cuisineArray));
-        restaurants.add(new Restaurant("Ox's", 300, cuisineArray));
-        restaurants.add(new Restaurant("Px's", 300, cuisineArray));
+        restaurants.add(new Restaurant("Nx's", 1000, cuisineArray));
+        restaurants.add(new Restaurant("Mx's", 1000, cuisineArray));
+        restaurants.add(new Restaurant("Ox's", 600, cuisineArray));
+        restaurants.add(new Restaurant("Px's", 600, cuisineArray));
         return restaurants;
     }
 

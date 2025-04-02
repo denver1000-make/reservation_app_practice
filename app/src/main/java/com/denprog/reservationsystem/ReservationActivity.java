@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -23,6 +25,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.denprog.reservationsystem.databinding.ActivityReservationBinding;
+import com.denprog.reservationsystem.ui.dialog.FilterDialogFragment;
+import com.denprog.reservationsystem.ui.dialog.SearchQueryAndRange;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -31,6 +35,7 @@ public class ReservationActivity extends AppCompatActivity {
     ReservationActivityViewModel viewModel;
     ActivityReservationBinding binding;
     AlertDialog exitPrompt;
+    FilterDialogFragment filterDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class ReservationActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        filterDialogFragment = new FilterDialogFragment();
         this.exitPrompt =
                 new AlertDialog
                         .Builder(this)
@@ -85,8 +91,28 @@ public class ReservationActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.reservation_interrupt_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchView);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        MenuItem searchViewMenuItem = menu.findItem(R.id.searchView);
+        MenuItem filterSearchViewItem = menu.findItem(R.id.filter);
+        Button button = (Button) filterSearchViewItem.getActionView();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!filterDialogFragment.isVisible()) {
+                    filterDialogFragment.show(getSupportFragmentManager(), "");
+                }
+            }
+        });
+
+        getSupportFragmentManager().setFragmentResultListener(FilterDialogFragment.RESULT_KEY, this, (requestKey, result) -> {
+            int start = result.getInt(FilterDialogFragment.START_PRICE_BUNDLE_KEY);
+            int end = result.getInt(FilterDialogFragment.END_PRICE_BUNDLE_KEY);
+            SearchQueryAndRange searchQueryAndRange = viewModel.restaurantSearchQuery.getValue();
+            searchQueryAndRange.startRange = start;
+            searchQueryAndRange.endRange = end;
+            viewModel.restaurantSearchQuery.setValue(searchQueryAndRange);
+        });
+
+        SearchView searchView = (SearchView) searchViewMenuItem.getActionView();
         assert searchView != null;
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -95,7 +121,9 @@ public class ReservationActivity extends AppCompatActivity {
                 NavDestination navDestination = navController.getCurrentDestination();
                 if (navDestination == null) return false;
                 if (navDestination.getId() == R.id.restaurantFragment) {
-                    viewModel.restaurantSearchQuery.setValue(s);
+                    SearchQueryAndRange searchQueryAndRange = viewModel.restaurantSearchQuery.getValue();
+                    searchQueryAndRange.searchQuery = s;
+                    viewModel.restaurantSearchQuery.setValue(searchQueryAndRange);
                 } else if (navDestination.getId() == R.id.cuisineFragment) {
                     viewModel.cuisineSearchQuery.setValue(s);
                 }
@@ -106,8 +134,11 @@ public class ReservationActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 NavController navController = ((NavHostFragment) binding.reservationAcitvityContainer.getFragment()).getNavController();
                 NavDestination navDestination = navController.getCurrentDestination();
+                if (navDestination == null) return false;
                 if (navDestination.getId() == R.id.restaurantFragment) {
-                    viewModel.restaurantSearchQuery.setValue(s);
+                    SearchQueryAndRange searchQueryAndRange = viewModel.restaurantSearchQuery.getValue();
+                    searchQueryAndRange.searchQuery = s;
+                    viewModel.restaurantSearchQuery.setValue(searchQueryAndRange);
                 } else if (navDestination.getId() == R.id.cuisineFragment) {
                     viewModel.cuisineSearchQuery.setValue(s);
                 }

@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,17 +19,20 @@
             android:id="@+id/restaurant_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_box"
             android:layout_margin="@dimen/text_margin"
+            android:background="@drawable/item_box"
             android:padding="10dp"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
-            android:id="@+id/content"
+            android:id="@+id/restaurant_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
+            android:background="@drawable/item_box"
+            android:padding="10dp"
             android:textAppearance="?attr/textAppearanceListItem" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

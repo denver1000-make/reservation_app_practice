@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 public class RestaurantFragment extends Fragment {
     private FragmentRestaurantListBinding binding;
     private MyRestaurantRecyclerViewAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,21 +43,37 @@ public class RestaurantFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ReservationActivityViewModel viewModel = new ViewModelProvider(requireActivity()).get(ReservationActivityViewModel.class);
         viewModel.showPrevBtn.setValue(false);
-        viewModel.restaurantSearchQuery.observe(getViewLifecycleOwner(), s -> {
+        viewModel.restaurantSearchQuery.observe(getViewLifecycleOwner(), queryAndRange -> {
             List<Restaurant> filtered = new ArrayList<>();
             List<Restaurant> orig = Restaurant.generateRestaurantList();
-            if (s.isEmpty()) {
+
+            if ((queryAndRange.searchQuery == null || queryAndRange.searchQuery.isEmpty()) && queryAndRange.endRange == 0 && queryAndRange.startRange == 0) {
                 adapter.refreshAdapter(orig);
                 return;
-            }
-            orig.forEach(new Consumer<Restaurant>() {
-                @Override
-                public void accept(Restaurant restaurant) {
-                    if (restaurant.restaurantName.contains(s)) {
-                        filtered.add(restaurant);
-                    }
+            } else {
+
+                if ((queryAndRange.searchQuery != null && !queryAndRange.searchQuery.isEmpty()) && queryAndRange.endRange != 0) {
+                    orig.forEach(restaurant -> {
+                        if (restaurant.restaurantName.contains(queryAndRange.searchQuery) && restaurant.restaurantPrice >= queryAndRange.startRange && restaurant.restaurantPrice <= queryAndRange.endRange) {
+                            filtered.add(restaurant);
+                        }
+                    });
+                } else if (queryAndRange.startRange == 0 && queryAndRange.endRange == 0) {
+                    orig.forEach(restaurant -> {
+                        if (restaurant.restaurantName.contains(queryAndRange.searchQuery) ) {
+                            filtered.add(restaurant);
+                        }
+                    });
+                } else {
+                    orig.forEach(restaurant -> {
+                        if ( restaurant.restaurantPrice >= queryAndRange.startRange && restaurant.restaurantPrice <= queryAndRange.endRange) {
+                            filtered.add(restaurant);
+                        }
+                    });
                 }
-            });
+
+                adapter.refreshAdapter(filtered);
+            }
             adapter.refreshAdapter(filtered);
         });
     }

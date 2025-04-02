@@ -46,6 +46,7 @@ public class MyRestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyRest
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.binding.restaurantName.setText(mValues.get(position).restaurantName);
+        holder.binding.restaurantPrice.setText(holder.mItem.restaurantPrice + " Pesos");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,19 +61,17 @@ public class MyRestaurantRecyclerViewAdapter extends RecyclerView.Adapter<MyRest
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mContentView;
         public Restaurant mItem;
 
         FragmentRestaurantItemBinding binding;
         public ViewHolder(FragmentRestaurantItemBinding binding) {
             super(binding.getRoot());
             this.binding =binding;
-            mContentView = binding.content;
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mItem.restaurantName + "'";
         }
     }
 }
